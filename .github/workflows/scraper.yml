@@ -1,0 +1,36 @@
+name: Bot Sultan Scraper
+
+# Kapan bot ini jalan?
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Otomatis setiap 6 jam
+  workflow_dispatch:      # Memunculkan tombol "Run workflow" untuk testing manual
+
+# Izin mutlak agar bot bisa push/commit file sub.txt kembali ke repo
+permissions:
+  contents: write
+
+jobs:
+  build-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Jalankan Script Scraper
+        run: python scraper.py
+
+      - name: Commit dan Push Hasil ke Repo
+        run: |
+          git config --global user.name "Bot Sultan"
+          git config --global user.email "bot@sultan.local"
+          # Tambahkan file sub.txt yang baru digenerate oleh script
+          git add sub.txt
+          # Kalau tidak ada perubahan, jangan error (exit 0)
+          git commit -m "🔥 Auto Update Nodes: $(date)" || exit 0
+          git push
