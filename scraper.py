@@ -46,8 +46,12 @@ def main():
     waktu_sekarang = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     watermark = f"vless://sultan-uuid@1.1.1.1:443?type=ws&security=tls#🔥_Sultan_Update_{waktu_sekarang.replace(' ', '_')}"
     
+    # --- KODE GABUNGAN LIMITASI ---
+    # Ubah set menjadi list, lalu potong hanya mengambil 150 node pertama
+    node_pilihan = list(all_nodes)[:150]
+    
     # Gabungkan, pastikan watermark ada di paling atas saat di-import ke aplikasi
-    final_nodes = [watermark] + list(all_nodes)
+    final_nodes = [watermark] + node_pilihan
     final_text = "\n".join(final_nodes)
     
     # Wajib di-encode ke Base64 agar aplikasi seperti Sing-box/Xray bisa membaca URL-nya
@@ -57,7 +61,7 @@ def main():
     with open("sub.txt", "w") as file:
         file.write(encoded_string)
         
-    print(f"Sukses! Berhasil membajak {len(final_nodes)} node dari berbagai sumber pada {waktu_sekarang}")
+    print(f"Sukses! Berhasil membajak {len(node_pilihan)} node terpilih dari total {len(all_nodes)} tangkapan pada {waktu_sekarang}")
 
 if __name__ == "__main__":
     main()
