@@ -4,6 +4,9 @@ name: Bot Sultan Scraper
 on:
   schedule:
     - cron: '0 */6 * * *' # Otomatis setiap 6 jam
+  push:
+    branches:
+      - main              # OTOMATIS JALAN saat ada edit/push kode ke branch 'main'
   workflow_dispatch:      # Memunculkan tombol "Run workflow" untuk testing manual
 
 # Izin mutlak agar bot bisa push/commit file sub.txt kembali ke repo
